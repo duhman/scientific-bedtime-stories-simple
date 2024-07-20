@@ -1,6 +1,6 @@
 # Scientific Bedtime Stories (Simple Version)
 
-This project generates bedtime stories from random scientific papers using OpenAI's GPT-3 and converts them to audio using ElevenLabs' text-to-speech API.
+This project generates bedtime stories from random scientific papers using OpenAI's GPT-3 and converts them to audio using OpenAI's text-to-speech API with the Nova voice.
 
 ## Setup
 
@@ -12,7 +12,6 @@ This project generates bedtime stories from random scientific papers using OpenA
 3. Create a `.env.local` file in the root directory and add your API keys:
    ```
    OPENAI_API_KEY=your_openai_api_key_here
-   ELEVEN_API_KEY=your_elevenlabs_api_key_here
    ```
 4. Run the development server:
    ```
@@ -24,7 +23,7 @@ This project generates bedtime stories from random scientific papers using OpenA
 
 - Fetches a random scientific paper from arXiv
 - Generates a bedtime story based on the paper using OpenAI's GPT-3
-- Converts the story to audio using ElevenLabs' text-to-speech API
+- Converts the story to audio using OpenAI's text-to-speech API with the Nova voice
 - Allows users to generate new stories with a button click
 
 ## Technologies Used
@@ -32,7 +31,6 @@ This project generates bedtime stories from random scientific papers using OpenA
 - Next.js
 - React
 - OpenAI API
-- ElevenLabs API
 - Axios for HTTP requests
 - Tailwind CSS for styling
 

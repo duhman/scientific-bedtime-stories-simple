@@ -2,11 +2,9 @@ import axios from 'axios';
 import OpenAI from 'openai';
 import fs from 'fs';
 import path from 'path';
-import crypto from 'crypto';
-import { parseString } from 'xml2js';
 import util from 'util';
 
-const parseXml = util.promisify(parseString);
+const parseXml = util.promisify(require('xml2js').parseString);
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -40,56 +38,45 @@ export default async function handler(req, res) {
 
     console.log('Extracted paper:', paper);
 
-    // Generate bedtime story using OpenAI
-    const prompt = `Convert this scientific paper titled '${paper.title}' with the following abstract into a short bedtime story for a 10-year-old child: ${paper.summary}`;
+    // Generate a shorter bedtime story using OpenAI
+    const prompt = `Convert this scientific paper titled '${paper.title}' into a very short bedtime story for a 6-year-old child. Keep it simple, fun, and within 50 words: ${paper.summary}`;
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        {"role": "system", "content": "You are a helpful assistant that converts scientific papers into bedtime stories for children."},
+        {"role": "system", "content": "You are a helpful assistant that converts scientific papers into very short, simple bedtime stories for young children."},
         {"role": "user", "content": prompt}
       ],
-      max_tokens: 300,
+      max_tokens: 70,
     });
 
     if (!completion.choices || completion.choices.length === 0) {
       throw new Error('No completion choices returned from OpenAI');
     }
 
-    const bedtimeStory = completion.choices[0].message.content.trim();
+    let bedtimeStory = completion.choices[0].message.content.trim();
 
     console.log('Generated bedtime story:', bedtimeStory);
 
-    // Generate audio using ElevenLabs API
-    const voiceId = req.query.voiceId || 'EXAVITQu4vr4xnSDxMaL'; // Josh voice
-    const fileName = `story_${crypto.randomBytes(4).toString('hex')}.mp3`;
-    const filePath = path.join(process.cwd(), 'public', fileName);
+    // Remove or replace mathematical symbols
+    bedtimeStory = bedtimeStory.replace(/[$\\]/g, '');
 
-    const elevenLabsResponse = await axios({
-      method: 'post',
-      url: `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
-      headers: {
-        'Accept': 'audio/mpeg',
-        'Content-Type': 'application/json',
-        'xi-api-key': process.env.ELEVEN_API_KEY
-      },
-      data: {
-        text: bedtimeStory,
-        model_id: 'eleven_monolingual_v1',
-        voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.5
-        }
-      },
-      responseType: 'arraybuffer'
+    // Generate audio using OpenAI text-to-speech
+    const audioResponse = await openai.audio.speech.create({
+      model: "tts-1",
+      voice: "nova",
+      input: bedtimeStory,
     });
 
-    fs.writeFileSync(filePath, elevenLabsResponse.data);
+    // Convert the audio response to a base64 string
+    const audioBase64 = Buffer.from(await audioResponse.arrayBuffer()).toString('base64');
+    const audioUrl = `data:audio/mp3;base64,${audioBase64}`;
 
-    res.status(200).json({ story: bedtimeStory, audioUrl: `/${fileName}` });
+    res.status(200).json({ story: bedtimeStory, audioUrl });
   } catch (error) {
     console.error('Error generating story:', error);
     if (error.response) {
-      console.error('API response error:', error.response.data);
+      const responseData = error.response.data.toString(); // Convert Buffer to string
+      console.error('API response error:', responseData);
     }
     res.status(500).json({ error: 'Failed to generate story', details: error.message });
   }
