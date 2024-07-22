@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     console.log('Extracted paper:', paper);
 
     // Generate a shorter bedtime story using OpenAI
-    const prompt = `Convert this scientific paper titled '${paper.title}' into a very short bedtime story for a 6-year-old child. Keep it simple, fun, and within 50 words: ${paper.summary}`;
+    const prompt = `Convert this scientific paper titled '${paper.title}' into a very short bedtime story for a 6-year-old child, in the style of Dr. Seuss. Keep it simple, fun, and within 50 words: ${paper.summary}`;
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
