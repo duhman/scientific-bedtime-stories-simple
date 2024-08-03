@@ -26,20 +26,18 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div>
-        <h1 className="text-2xl font-bold mb-4">Scientific Bedtime Story</h1>
-      </div>
-      <div>
+    <div className="container mx-auto p-4 max-w-2xl">
+      <h1 className="text-3xl font-bold mb-6 text-center">Scientific Bedtime Story</h1>
+      <div className="bg-white shadow-md rounded-lg p-6">
         {loading ? (
-          <p>Loading your bedtime story...</p>
+          <p className="text-center">Loading your bedtime story...</p>
         ) : error ? (
-          <p className="text-red-500">{error}</p>
+          <p className="text-red-500 text-center">{error}</p>
         ) : (
           <>
-            <div className="mb-4 whitespace-pre-wrap">{story}</div>
+            <div className="mb-6 text-lg font-medium">{story}</div>
             {audio && (
-              <audio controls src={audio} className="w-full">
+              <audio controls src={audio} className="w-full mb-4">
                 Your browser does not support the audio element.
               </audio>
             )}
@@ -47,7 +45,7 @@ export default function Home() {
         )}
         <button
           onClick={fetchStory}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300"
           disabled={loading}
         >
           {loading ? 'Generating...' : 'Generate New Story'}

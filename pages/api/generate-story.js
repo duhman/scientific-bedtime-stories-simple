@@ -39,14 +39,14 @@ export default async function handler(req, res) {
     console.log('Extracted paper:', paper);
 
     // Generate a shorter bedtime story using OpenAI
-    const prompt = `Convert this scientific paper titled '${paper.title}' into a very short bedtime story for a 6-year-old child, in the style of Dr. Seuss. Keep it simple, fun, and within 50 words: ${paper.summary}`;
+    const prompt = `Create a very short, Dr. Seuss-style bedtime story (max 40 words) for a 6-year-old based on this scientific paper: '${paper.title}'. Make it fun and simple.`;
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        {"role": "system", "content": "You are a helpful assistant that converts scientific papers into very short, simple bedtime stories for young children."},
+        {"role": "system", "content": "You are an expert at creating short, fun bedtime stories from scientific concepts."},
         {"role": "user", "content": prompt}
       ],
-      max_tokens: 70,
+      max_tokens: 60,
     });
 
     if (!completion.choices || completion.choices.length === 0) {
@@ -60,18 +60,21 @@ export default async function handler(req, res) {
     // Remove or replace mathematical symbols
     bedtimeStory = bedtimeStory.replace(/[$\\]/g, '');
 
-    // Generate audio using OpenAI text-to-speech
-    const audioResponse = await openai.audio.speech.create({
-      model: "tts-1",
-      voice: "nova",
-      input: bedtimeStory,
-    });
+    try {
+      const audioResponse = await openai.audio.speech.create({
+        model: "tts-1",
+        voice: "nova",
+        input: bedtimeStory,
+      });
 
-    // Convert the audio response to a base64 string
-    const audioBase64 = Buffer.from(await audioResponse.arrayBuffer()).toString('base64');
-    const audioUrl = `data:audio/mp3;base64,${audioBase64}`;
+      const audioBase64 = Buffer.from(await audioResponse.arrayBuffer()).toString('base64');
+      const audioUrl = `data:audio/mp3;base64,${audioBase64}`;
 
-    res.status(200).json({ story: bedtimeStory, audioUrl });
+      res.status(200).json({ story: bedtimeStory, audioUrl });
+    } catch (audioError) {
+      console.error('Error generating audio:', audioError);
+      res.status(200).json({ story: bedtimeStory, audioUrl: null, audioError: 'Failed to generate audio' });
+    }
   } catch (error) {
     console.error('Error generating story:', error);
     if (error.response) {

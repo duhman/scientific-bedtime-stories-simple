@@ -21,9 +21,9 @@ This project generates bedtime stories from random scientific papers using OpenA
 
 ## Features
 
-- Fetches a random scientific paper from arXiv
-- Generates a bedtime story based on the paper using OpenAI's GPT-3
+- Generates a short, Dr. Seuss-style bedtime story based on the paper using OpenAI's GPT-3.5-turbo
 - Converts the story to audio using OpenAI's text-to-speech API with the Nova voice
+- Presents the story and audio in a user-friendly interface
 - Allows users to generate new stories with a button click
 
 ## Technologies Used
