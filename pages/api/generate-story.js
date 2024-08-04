@@ -8,8 +8,13 @@ import { parseString } from 'xml2js'
 const parseXml = util.promisify(parseString)
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+  apiKey: process.env.OPENAI_API_KEY || '',
+});
+
+if (!process.env.OPENAI_API_KEY) {
+  console.error('OPENAI_API_KEY is not set');
+  throw new Error('OpenAI API key is missing');
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

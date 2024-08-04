@@ -36,7 +36,7 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Error fetching story:', error)
-      setError(error.response?.data?.error || 'An unexpected error occurred')
+      setError(error.response?.data?.error || error.message || 'An unexpected error occurred')
     }
     setLoading(false)
   }
