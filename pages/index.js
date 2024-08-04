@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter } from '../components/ui/card'
 export default function Home() {
   const [story, setStory] = useState(null)
   const [audio, setAudio] = useState(null)
+  const [paperUrl, setPaperUrl] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -20,6 +21,7 @@ export default function Home() {
       const response = await axios.get('/api/generate-story')
       setStory(response.data.story)
       setAudio(response.data.audioUrl)
+      setPaperUrl(response.data.paperUrl)
     } catch (error) {
       console.error('Error fetching story:', error)
       setError(error.response?.data?.error || 'An unexpected error occurred')
@@ -50,11 +52,13 @@ export default function Home() {
                   Your browser does not support the audio element.
                 </audio>
               )}
-              <p className="text-center mt-4">
-                <a href="URL_TO_ACADEMIC_PAPER" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-                  Read the academic paper
-                </a>
-              </p>
+              {paperUrl && (
+                <p className="text-center mt-4">
+                  <a href={paperUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                    Read the academic paper
+                  </a>
+                </p>
+              )}
             </>
           )}
         </CardContent>

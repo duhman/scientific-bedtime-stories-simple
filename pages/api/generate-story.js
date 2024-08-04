@@ -31,6 +31,7 @@ export default async function handler(req, res) {
     const paper = {
       title: entry.title[0],
       summary: entry.summary[0],
+      url: entry.id[0], // Assuming the ID is the URL to the paper
     }
 
     const prompt = `Create a very short, Dr. Seuss-style bedtime story (max 40 words) for a 6-year-old based on this scientific paper: '${paper.title}'. Make it fun and simple.`
@@ -60,7 +61,7 @@ export default async function handler(req, res) {
       const audioBase64 = Buffer.from(await audioResponse.arrayBuffer()).toString('base64')
       const audioUrl = `data:audio/mp3;base64,${audioBase64}`
 
-      res.status(200).json({ story: bedtimeStory, audioUrl })
+      res.status(200).json({ story: bedtimeStory, audioUrl, paperUrl: paper.url })
     } catch (audioError) {
       console.error('Error generating audio:', audioError)
       res.status(200).json({ story: bedtimeStory, audioUrl: null, audioError: 'Failed to generate audio' })
