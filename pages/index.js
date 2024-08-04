@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Card, CardContent, CardFooter } from '../components/ui/card'
+import './styles.css' // Ensure you have a styles.css file
 
 export default function Home() {
   const [story, setStory] = useState(null)
@@ -37,8 +38,8 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-6 text-center">Scientific Bedtime Story</h1>
-      <Card>
+      <h1 className="text-4xl font-extrabold mb-6 text-center fancy-text">Science Tales for Kids</h1>
+      <Card className="card transition-transform transform hover:scale-105">
         <CardContent>
           {loading ? (
             <p className="text-center">Loading your bedtime story...</p>

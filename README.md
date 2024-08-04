@@ -1,4 +1,4 @@
-# Scientific Bedtime Stories
+# Sleepytime Paper
 
 This project generates short, Dr. Seuss-style bedtime stories from random scientific papers using OpenAI's GPT-3.5-turbo and converts them to audio using OpenAI's text-to-speech API with the Nova voice.
 

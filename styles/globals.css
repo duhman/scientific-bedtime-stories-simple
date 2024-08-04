@@ -77,4 +77,24 @@
   body {
     @apply bg-background text-foreground;
   }
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  .image {
+    filter: grayscale(50%) blur(2px);
+  }
+  .overlay {
+    background: url('overlay.png');
+    mix-blend-mode: multiply;
+  }
+  .float-image {
+    float: left;
+    shape-outside: circle(50%);
+    clip-path: circle(50%);
+  }
+  .fancy-text {
+    background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
