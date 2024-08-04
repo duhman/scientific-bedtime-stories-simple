@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Card, CardContent, CardFooter } from '../components/ui/card'
+import { generateImage } from '../lib/generateImage'
 
 export default function Home() {
   const [story, setStory] = useState(null)
@@ -8,6 +9,7 @@ export default function Home() {
   const [paperUrl, setPaperUrl] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [coverImage, setCoverImage] = useState(null)
 
   useEffect(() => {
     fetchStory()
@@ -19,9 +21,14 @@ export default function Home() {
     setError(null)
     try {
       const response = await axios.get('/api/generate-story')
-      setStory(response.data.story)
+      const storyText = response.data.story
+      setStory(storyText)
       setAudio(response.data.audioUrl)
       setPaperUrl(response.data.paperUrl)
+
+      // Generate the book cover image
+      const imageUrl = await generateImage(`A book cover for a story titled: ${storyText}`)
+      setCoverImage(imageUrl)
     } catch (error) {
       console.error('Error fetching story:', error)
       setError(error.response?.data?.error || 'An unexpected error occurred')
@@ -58,6 +65,11 @@ export default function Home() {
                     Read the academic paper
                   </a>
                 </p>
+              )}
+              {coverImage && (
+                <div className="text-center mt-4">
+                  <img src={coverImage} alt="Book Cover" className="mx-auto" />
+                </div>
               )}
             </>
           )}
