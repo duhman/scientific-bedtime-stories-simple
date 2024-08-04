@@ -10,6 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchStory()
+    setThemeBasedOnTime()
   }, [])
 
   const fetchStory = async () => {
@@ -24,6 +25,12 @@ export default function Home() {
       setError(error.response?.data?.error || 'An unexpected error occurred')
     }
     setLoading(false)
+  }
+
+  const setThemeBasedOnTime = () => {
+    const hour = new Date().getHours()
+    const isDarkMode = hour >= 18 || hour < 6
+    document.documentElement.classList.toggle('dark', isDarkMode)
   }
 
   return (
@@ -43,6 +50,11 @@ export default function Home() {
                   Your browser does not support the audio element.
                 </audio>
               )}
+              <p className="text-center mt-4">
+                <a href="URL_TO_ACADEMIC_PAPER" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                  Read the academic paper
+                </a>
+              </p>
             </>
           )}
         </CardContent>
