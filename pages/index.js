@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Card, CardContent, CardFooter } from '../components/ui/card'
-import './styles.css' // Ensure you have a styles.css file
 
 export default function Home() {
   const [story, setStory] = useState(null)
