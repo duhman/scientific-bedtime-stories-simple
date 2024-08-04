@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node --no-warnings node_modules/.bin/next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,21 +13,24 @@
     "axios": "^1.7.2",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
-    "elevenlabs-node": "^2.0.3",
     "next": "^14.2.5",
     "openai": "^4.52.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
-    "xml2js": "^0.6.2",
-    "xmldom": "^0.6.0"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.19",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/xml2js": "^0.4.11",
+    "autoprefixer": "^10.4.20",
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.0",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.6"
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.0.0"
   }
 }
