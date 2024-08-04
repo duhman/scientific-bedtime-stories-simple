@@ -27,8 +27,13 @@ export default function Home() {
       setPaperUrl(response.data.paperUrl)
 
       // Generate the book cover image
-      const imageUrl = await generateImage(`A book cover for a story titled: ${storyText}`)
-      setCoverImage(imageUrl)
+      try {
+        const imageUrl = await generateImage(`A book cover for a story titled: ${storyText}`);
+        setCoverImage(imageUrl);
+      } catch (imageError) {
+        console.error('Error generating image:', imageError);
+        setError('Failed to generate book cover image');
+      }
     } catch (error) {
       console.error('Error fetching story:', error)
       setError(error.response?.data?.error || 'An unexpected error occurred')
