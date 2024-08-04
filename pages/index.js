@@ -3,10 +3,10 @@ import axios from 'axios'
 import { Card, CardContent, CardFooter } from '../components/ui/card'
 
 export default function Home() {
-  const [story, setStory] = useState<string | null>(null)
-  const [audio, setAudio] = useState<string | null>(null)
+  const [story, setStory] = useState(null)
+  const [audio, setAudio] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     fetchStory()
