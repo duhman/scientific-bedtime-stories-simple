@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
     "next": "^14.2.5",
